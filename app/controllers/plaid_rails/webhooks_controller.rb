@@ -1,9 +1,14 @@
 module PlaidRails
   class WebhooksController < ApplicationController
-    skip_before_filter :verify_authenticity_token
     
     def create
-      webhook = PlaidRails::Webhook.create!(webhook_params)
+      webhook = PlaidRails::Webhook.find_by(item_id: params["item_id"])
+      webhook.new_transactions = params['new_transactions']
+      webhook.webhook_code = params["webhook_code"]
+      webhook.webhook_type = params["webhook_type"]
+      webhook.error = params["error"]
+      webhook.save
+
       render json: webhook
     end
     

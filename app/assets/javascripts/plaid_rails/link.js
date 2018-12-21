@@ -24,12 +24,12 @@ function getPlaid(plaidData) {
 
     var linkHandler = Plaid.create({
         env: env,
-        apiVersion: 'v2',
         clientName: plaidData.data('client-name'),
         key: plaidData.data('key'),
         product: product,
         webhook: plaidData.data('webhook'),
         token: token,
+        selectAccount: true,
         onLoad: function () {
             // The Link module finished loading.
         },
@@ -48,8 +48,17 @@ function getPlaid(plaidData) {
                     type: metadata.account.type,
                     owner_type: plaidData.data('owner-type'),
                     owner_id: plaidData.data('owner-id'),
-                    number: metadata.account.mask
-                }
+                    number: metadata.account.mask,
+                    account: metadata.account,
+                    accounts: metadata.accounts
+                },
+                success: function(evn){
+                    window.location.reload()
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                    alert("Status: " + textStatus); alert("Error: " + errorThrown);
+                    window.location.reload()
+                }  
             });
         },
         onExit: function (err, metadata) {
