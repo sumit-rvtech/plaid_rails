@@ -15,15 +15,17 @@ module PlaidRails
         webhook = PlaidRails::Webhook.create(access_token: @exchange_token.access_token, item_id: @exchange_token.item_id)
 
         # create account if account params found
-        _account = PlaidRails::Account.find_or_initialize_by(access_token: @exchange_token.access_token)
-        _account.name = params["account"]["name"]
-        _account.plaid_type = params["account"]["type"]
-        _account.plaid_id = params["account"]["id"]
-        _account.number = params["account"]["mask"]
-        _account.owner_type = params["owner_type"]
-        _account.owner_id = params["owner_id"]
-        _account.item_id = @exchange_token.item_id
-        _account.save
+        if params["account"].present?
+          _account = PlaidRails::Account.find_or_initialize_by(access_token: @exchange_token.access_token)
+          _account.name = params["account"]["name"]
+          _account.plaid_type = params["account"]["type"]
+          _account.plaid_id = params["account"]["id"]
+          _account.number = params["account"]["mask"]
+          _account.owner_type = params["owner_type"]
+          _account.owner_id = params["owner_id"]
+          _account.item_id = @exchange_token.item_id
+          _account.save
+        end
         
         puts "\n\n\n #{@exchange_token} \n\n\n"
         

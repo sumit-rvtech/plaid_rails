@@ -4,7 +4,7 @@ module PlaidRails
   class AccountsController < ApplicationController
     
     def index
-      @plaid_accounts =PlaidRails::Account.where(owner_id: account_params[:owner_id])
+      @plaid_accounts = PlaidRails::Account.where(owner_id: account_params[:owner_id])
     end
     
     # display list of accounts for authenticated user
